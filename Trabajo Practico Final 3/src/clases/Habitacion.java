@@ -1,6 +1,7 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.sound.midi.Soundbank;
 
@@ -11,12 +12,12 @@ public class Habitacion {
 	private ArrayList<Fecha> fechasOcupadas;
 	private double tarifa;
 
-	public Habitacion(int numero, int capacidad, double tarifa) {
+	public Habitacion(int numero, int capacidad, double tarifa,boolean disponibilidad, String detalle) {
 		this.numero = numero;
 		this.capacidad = capacidad;
 		this.tarifa = tarifa;
 		fechasOcupadas = new ArrayList<Fecha>();
-		disponible = new Disponible();
+		disponible = new Disponible( disponibilidad, detalle);
 	}
 	
 	public void mostrar () {
@@ -33,5 +34,19 @@ public class Habitacion {
 	
 	public void comprobarFechas (Date fecha) {
 		
+	}
+	@Override
+	public String toString () {
+		return "Numero:" + numero + "\nCapacidad: " + capacidad +
+				"\nDisponibilidad: "+ disponible.toString() + "\nFechas Ocupadas: "
+				+ fechasOcupadas.toString() + "\nTarifa: " + tarifa;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+	public boolean getDisponible () {
+		
+		return disponible.getDisponibilidad();
 	}
 }

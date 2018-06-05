@@ -9,6 +9,10 @@ public class Disponible {
 		this.detalle = detalle;
 	}
 
+	public boolean getDisponibilidad() {
+		return disponibilidad;
+	}
+
 	public String getDetalle() {
 		return detalle;
 	}

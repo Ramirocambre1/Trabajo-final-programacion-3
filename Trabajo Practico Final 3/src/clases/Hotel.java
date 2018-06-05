@@ -2,67 +2,94 @@ package clases;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.sound.midi.Soundbank;
 
 public class Hotel {
-	
+
 	private String nombre;
 	private String direccion;
-	private Recepcionista recepcionista;
-	HashMap<Integer,Habitacion>habitaciones;
-	HashMap<Integer,Reserva>reservas;
-	ArrayList<Pasajero>registroPasajeros;
-	
-	public Hotel(String nombre, String direccion, Recepcionista recepcionista) {
-		habitaciones=new HashMap<Integer,Habitacion>();
-		reservas=new HashMap<Integer,Reserva>();
-		registroPasajeros=new ArrayList<Pasajero>();
+	// private Recepcionista recepcionista; // Se agregara si es necesario
+	HashMap<Integer, Habitacion> habitaciones;
+	HashMap<Integer, Reserva> reservas;
+	ArrayList<Pasajero> registroPasajeros;
+
+	public Hotel(String nombre, String direccion) {
+		habitaciones = new HashMap<Integer, Habitacion>();
+		reservas = new HashMap<Integer, Reserva>();
+		registroPasajeros = new ArrayList<Pasajero>();
 		this.nombre = nombre;
 		this.direccion = direccion;
-		this.recepcionista = recepcionista;
-	} 
-	
-	public void agregarHabitacion(Habitacion e)
-	{
-		
+		// this.recepcionista = recepcionista; // por ahora se descarta
 	}
-	
-	public void mostrarHotel()
-	{
-		
+
+	public void agregarHabitacion(Habitacion e) {
+		habitaciones.put(e.getNumero(), e);
 	}
-	
-	public void mostrarDisponible()
-	{
-		
+
+	/**
+	 * Mostrar info del hotel
+	 */
+	public void mostrarHotel() {
+		System.out.println("----------- HOTEL ------------");
+		System.out.println("Nombre: " + nombre + "\nDireccion: " + direccion);
+		System.out.println("-----------------------------");
 	}
-	
-	public void mostrarOcupadas()
-	{
-		
+
+	/**
+	 * Mostrar habitaciones disponibles
+	 */
+	public void mostrarDisponible() {
+		for (Habitacion hab : habitaciones.values()) { // para recorrer solo los valores
+			if (hab.getDisponible() == true) {
+				System.out.println("--------------- Habitacion ----------------");
+				System.out.println(hab.toString());
+			}
+		}
+		/*
+		 * for (Map.Entry<Integer, Habitacion> hab : habitaciones.entrySet()) { // para recorrer clave y valor
+		 * System.out.println(hab.getValue().toString()); }
+		 */
 	}
-	
-	public void cambiarCostos()
-	{
-		
+
+	/**
+	 * Mostrar habitaciones ocupadas
+	 */
+	public void mostrarOcupadas() {
+		for (Habitacion hab : habitaciones.values()) { // para recorrer solo los valores
+			if (hab.getDisponible() == false) {
+				System.out.println("--------------- Habitacion ----------------");
+				System.out.println(hab.toString());
+			}
+		}
+
 	}
-	
-	public void getCosto()
-	{
-		
+
+	/**
+	 * Mostrar todas las habitaciones
+	 */
+	public void listarHabitaciones() {
+		mostrarDisponible();
+		mostrarOcupadas();
 	}
-	
-	public void verReserva()
-	{
-		
+
+	public void cambiarCostos() {
+
 	}
-	
-	public void nuevaReserva()
-	{
-		
+
+	public void getCosto() {
+
 	}
-	
-	
-	
-	
+
+	public void verReserva() {
+
+	}
+
+	public void nuevaReserva() {
+
+	}
 
 }

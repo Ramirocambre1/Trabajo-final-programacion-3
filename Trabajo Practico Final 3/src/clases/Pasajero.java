@@ -7,7 +7,7 @@ public class Pasajero {
 	private String apellido;
 	private int dni;
 	private String origen;
-	private String domicilio
+	private String domicilio;
 	private ArrayList <Registro> registro;
 	private int telefono;
 	

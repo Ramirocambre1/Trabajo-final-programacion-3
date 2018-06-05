@@ -15,7 +15,7 @@ public class Registro {
 	}
 	
 	public void mostrarHabitaciones(){
-		
+		habitacion.mostrar();
 	}
 	
     
