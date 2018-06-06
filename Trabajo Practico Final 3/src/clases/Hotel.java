@@ -15,12 +15,12 @@ public class Hotel {
 	// private Recepcionista recepcionista; // Se agregara si es necesario
 	HashMap<Integer, Habitacion> habitaciones;
 	HashMap<Integer, Reserva> reservas;
-	ArrayList<Pasajero> registroPasajeros;
+	
 
 	public Hotel(String nombre, String direccion) {
 		habitaciones = new HashMap<Integer, Habitacion>();
 		reservas = new HashMap<Integer, Reserva>();
-		registroPasajeros = new ArrayList<Pasajero>();
+		
 		this.nombre = nombre;
 		this.direccion = direccion;
 		// this.recepcionista = recepcionista; // por ahora se descarta
