@@ -9,6 +9,7 @@ public class Reserva {
 	private int cantidadPasajeros;
 	private double costo;
 	ArrayList<Pasajero> registroPasajeros; // El array list lo saque de habitacion
+	
 	public Reserva(int numeroReserva, String dniPasajero, int cantidadPasajeros, double costo) {
 		registroPasajeros = new ArrayList<Pasajero>();
 		this.numeroReserva = numeroReserva;

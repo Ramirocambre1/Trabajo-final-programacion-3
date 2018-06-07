@@ -15,12 +15,11 @@ public class Hotel {
 	// private Recepcionista recepcionista; // Se agregara si es necesario
 	HashMap<Integer, Habitacion> habitaciones;
 	HashMap<Integer, Reserva> reservas;
-	
 
 	public Hotel(String nombre, String direccion) {
 		habitaciones = new HashMap<Integer, Habitacion>();
 		reservas = new HashMap<Integer, Reserva>();
-		
+
 		this.nombre = nombre;
 		this.direccion = direccion;
 		// this.recepcionista = recepcionista; // por ahora se descarta
@@ -43,14 +42,16 @@ public class Hotel {
 	 * Mostrar habitaciones disponibles
 	 */
 	public void mostrarDisponible() {
-		for (Habitacion hab : habitaciones.values()) { // para recorrer solo los valores
+		for (Habitacion hab : habitaciones.values()) { // para recorrer solo los
+														// valores
 			if (hab.getDisponible() == true) {
 				System.out.println("--------------- Habitacion ----------------");
 				System.out.println(hab.toString());
 			}
 		}
 		/*
-		 * for (Map.Entry<Integer, Habitacion> hab : habitaciones.entrySet()) { // para recorrer clave y valor
+		 * for (Map.Entry<Integer, Habitacion> hab : habitaciones.entrySet()) {
+		 * // para recorrer clave y valor
 		 * System.out.println(hab.getValue().toString()); }
 		 */
 	}
@@ -59,7 +60,8 @@ public class Hotel {
 	 * Mostrar habitaciones ocupadas
 	 */
 	public void mostrarOcupadas() {
-		for (Habitacion hab : habitaciones.values()) { // para recorrer solo los valores
+		for (Habitacion hab : habitaciones.values()) { // para recorrer solo los
+														// valores
 			if (hab.getDisponible() == false) {
 				System.out.println("--------------- Habitacion ----------------");
 				System.out.println(hab.toString());
@@ -75,13 +77,22 @@ public class Hotel {
 		mostrarDisponible();
 		mostrarOcupadas();
 	}
-
-	public void cambiarCostos() {
-
+	
+	public void cambiarCostos(int numeroHabitacion, int tarifaNueva) {
+		for (Habitacion hab : habitaciones.values()) { // para recorrer solo los
+														// valores
+			// hacer en while para cortar la busqueda cuando se encuentra la habitacion con un flag
+			if (hab.getNumero() == numeroHabitacion) {
+				hab.setTarifa(tarifaNueva); 
+			}
+		}
 	}
-
+	public void desplegarMenu (Usuario us){
+		
+	}
+	
 	public void getCosto() {
-
+		
 	}
 
 	public void verReserva() {

@@ -8,7 +8,7 @@ public class Pasajero {
 	private int dni;
 	private String origen;
 	private String domicilio;
-	private ArrayList <Registro> registro;
+	private ArrayList <Registro> registro; // registro de fechas en las que estuvo en el hotel
 	private int telefono;
 	
 	public Pasajero (String nombre, String apellido, int dni, String origen, String domicilio,int telefono) {

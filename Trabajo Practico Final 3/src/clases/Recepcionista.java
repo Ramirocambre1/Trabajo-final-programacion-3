@@ -9,6 +9,7 @@ public class Recepcionista extends Usuario {
 	
 	public void revisarDisponibilidad (int numeroHabitacion) {
 		
+		
 	}
 	
 }
