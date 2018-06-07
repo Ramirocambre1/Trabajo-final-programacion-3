@@ -1,2 +1,7 @@
 
 agregar toString a casi todas las clases
+
+agregar hotel a parametro de recepcionista
+agregar int en el constructor de pasajero
+agregar double tarifa en el cosntructor de 
+sacar Habitacion de "mostrar" en habitacion
