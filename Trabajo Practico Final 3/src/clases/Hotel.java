@@ -1,6 +1,7 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -15,11 +16,13 @@ public class Hotel {
 	// private Recepcionista recepcionista; // Se agregara si es necesario
 	HashMap<Integer, Habitacion> habitaciones;
 	HashMap<Integer, Reserva> reservas;
+        HashMap<String, Pasajero> pasajeros;  // base de datos de pasajeros
+
 
 	public Hotel(String nombre, String direccion) {
 		habitaciones = new HashMap<Integer, Habitacion>();
 		reservas = new HashMap<Integer, Reserva>();
-
+                pasajeros = new HashMap<String, Pasajero>();
 		this.nombre = nombre;
 		this.direccion = direccion;
 		// this.recepcionista = recepcionista; // por ahora se descarta
@@ -87,20 +90,57 @@ public class Hotel {
 			}
 		}
 	}
-	public void desplegarMenu (Usuario us){
-		
-	}
 	
 	public void getCosto() {
 		
 	}
-
-	public void verReserva() {
+        /**
+         * Consultar una reserva.
+         * @param numeroReserva
+         * numero de la reserva que se quiere consultar
+         */
+	public void consultarReserva(int numeroReserva) {
 
 	}
-
+        public void listarReservas (){
+            
+        }
 	public void nuevaReserva() {
-
+            
 	}
-
+        /**
+	 * Consultar habitaciones entre 2 fecha y segun la capacidad.
+         * Los muestra por pantalla.
+	 * @param fechaInicio
+	 * fecha a partir de la que se quiere buscar una habitacion.
+	 * @param fechaFin
+	 * hasta que fecha se quiere buscar una habitacion.
+         * @param 
+         * capacidad de la habitacion
+	 */
+	public void consultarHabitaciones (Date fechaInicio, Date fechaFin,int capacidad) { 
+            
+	}
+    public void registrarPasajero() 
+	{
+		
+	}
+    	public void checkIn(Reserva r)
+	{
+		
+	}
+	
+	public void checkOut(Reserva r)
+	{
+		
+	}
+        // ?
+        public void desplegarMenu (Usuario us){
+		
+	}
+        // ver si es necesario o no 
+        public void revisarDisponibilidad (int numeroHabitacion) {
+		
+		
+	}
 }

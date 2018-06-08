@@ -7,9 +7,5 @@ public class Recepcionista extends Usuario {
 		super (nombre,password);
 	}
 	
-	public void revisarDisponibilidad (int numeroHabitacion) {
-		
-		
-	}
 	
 }

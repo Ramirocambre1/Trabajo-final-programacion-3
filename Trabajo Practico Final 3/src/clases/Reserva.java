@@ -8,21 +8,18 @@ public class Reserva {
 	private String dniPasajero;
 	private int cantidadPasajeros;
 	private double costo;
-	ArrayList<Pasajero> registroPasajeros; // El array list lo saque de habitacion
-	
-	public Reserva(int numeroReserva, String dniPasajero, int cantidadPasajeros, double costo) {
-		registroPasajeros = new ArrayList<Pasajero>();
+        private int numeroHabitacion; 
+        
+	public Reserva(int numeroReserva, String dniPasajero, int cantidadPasajeros, double costo,int numeroHabitacion) {
 		this.numeroReserva = numeroReserva;
 		this.dniPasajero = dniPasajero;
 		this.cantidadPasajeros = cantidadPasajeros;
 		this.costo = costo;
+                this.numeroHabitacion = numeroHabitacion;
+        
 	}
 	
-	public void agregarPasajero(Pasajero e) //
-	{
-		registroPasajeros.add(e);
-		
-	}
+
 	/*
 	public void setFechaEntrada()
 	{
@@ -44,11 +41,10 @@ public class Reserva {
 		
 	}
 	
-	public void calcularCostos()
+	public void calcularCostos(int cantidadDias)
 	{
-		
+        calcular cantidad de dias q estuvo en la habitacion
 	}
 	*/
 }
 
-// hola lollllldsfgdgdf

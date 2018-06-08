@@ -35,19 +35,6 @@ public  class Usuario {
 	}
 
 	
-	/*public void checkIn(Reserva r)
-	{
-		
-	}
-	
-	public void checkOut(Reserva r)
-	{
-		
-	}
-	
-	public void Reservar()
-	{
-		
-	}
-	*/
+
+
 }

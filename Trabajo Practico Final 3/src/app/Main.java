@@ -25,14 +25,13 @@ public class Main {
 		hotelin.agregarHabitacion(hab1);
 		hotelin.listarHabitaciones();
 		
-		Date fechaEn;
-		fechaEn = new Date(2000,10,1);
-		
-		Date fechaSal = new Date(2000, 10, 20);
+		Date fechaEn  = new Date(2000,10,20); // año,mes,dia
+                Date fechaSal = new Date(2000, 10, 25);
 		
 		Pasajero pas = new Pasajero("pedrito", "fds", 1112, "fgdsg", "gdsgds", 12544);
 		
 		hab1.ocupar(fechaEn, fechaSal, pas);
+                hotelin.listarHabitaciones();
 
 	}
 }
