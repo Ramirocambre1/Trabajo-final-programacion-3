@@ -2,9 +2,9 @@ package clases;
 
 import java.util.ArrayList;
 
-import java.sql.Date; // sacar
+import java.sql.Date;
 
-import javax.sound.midi.Soundbank; // sacar
+import javax.sound.midi.Soundbank;
 
 public class Habitacion {
 
