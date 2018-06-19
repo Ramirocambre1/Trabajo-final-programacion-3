@@ -47,10 +47,17 @@ public class Habitacion {
         } else {
             System.out.println("La habitacion ya esta ocupada");
         }
-
+        // aca hacer registro en ocupante
     }
     public void desocupar (){
         
+    }
+    /**
+     * Eliminar del registro de las fechas ocupadas del hotel
+     * 
+     */
+    public void eliminarFechasOcupadas () {
+    	
     }
     /**
      * Comprueba si se puede ocupar la habitacion en base a un rango de fechas
@@ -97,4 +104,9 @@ public class Habitacion {
         this.tarifa = tarifa;
     }
 
+	public int getCapacidad() {
+		return capacidad;
+	}
+    
+    
 }

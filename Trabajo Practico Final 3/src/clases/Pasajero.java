@@ -28,4 +28,8 @@ public class Pasajero {
 		System.out.println("Origen" + origen + "\nDomicilio: "+ domicilio + "\nTelefono: " + telefono);
 	}
 
+	public int getDni() {
+		return dni;
+	}
+
 }

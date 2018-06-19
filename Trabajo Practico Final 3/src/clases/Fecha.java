@@ -22,5 +22,8 @@ public class Fecha {
 	public void setFechaOut(Date fechaOut) {
 		this.fechaOut = fechaOut;
 	}
-
+	
+	/*public int cantidadDias () { // para calcular el costo en base a los dias en que estuvo
+		
+	}*/
 }
