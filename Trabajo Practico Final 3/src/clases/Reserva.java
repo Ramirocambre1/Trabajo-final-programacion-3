@@ -1,5 +1,6 @@
 package clases;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Reserva {
@@ -20,24 +21,19 @@ public class Reserva {
 		return numeroHabitacion;
 	}
 
+	public Date getFechaEntrada() {
+		return fechas.getFechaIn();
+	}
+
+	public Date getFechaSalida() {
+		return fechas.getFechaOut();
+	}
 	/*
-	 * public void setFechaEntrada() {
-	 * 
-	 * }
-	 * 
-	 * public void setFechaSalida() {
-	 * 
-	 * }
-	 * 
-	 * public void getFechaEntrada() {
-	 * 
-	 * }
-	 * 
-	 * public void getFechaSalida() {
-	 * 
-	 * }
-	 * 
 	 * public void calcularCostos(int cantidadDias) { calcular cantidad de dias q
 	 * estuvo en la habitacion }
 	 */
+
+	public Pasajero getPasajero() {
+		return pasajero;
+	}
 }

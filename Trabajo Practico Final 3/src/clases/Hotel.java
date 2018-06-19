@@ -145,9 +145,17 @@ public class Hotel {
 		Date fechaOut = new Date(anio, mes, dia);
 		Fecha fechas = new Fecha(fechaIn, fechaOut);
 		int numeroHabitacion = obtenerNumeroHabitacion(fechaIn, fechaOut, cantidadPasajeros);
+		reservarHabitacion (numeroHabitacion,fechas);
 		Reserva reserva = new Reserva(pasajero, cantidadPasajeros, fechas, numeroHabitacion);
 		reservas.put(pasajero.getDni(), reserva); // la identificacion de las reservas es el dni de los pasajeros
 
+	}
+	/**
+	 * Reservar una habitacion
+	 * (Agrega las fechas al arreglo de fechas reservadas dentro de la habitacion)
+	 */
+	public void reservarHabitacion (int numeroHabitacion,Fecha fechas) {
+		// obtener la habitacion de la base de datos y pasarle por parametro la fecha
 	}
 
 	/**
@@ -172,16 +180,18 @@ public class Hotel {
 	 * @param fechaFin
 	 * @param capacidad
 	 * @return el numero de la habitacion disponible
-	 * @throws NoHayHabitacionesException 
+	 * @throws NoHayHabitacionesException
 	 */
-	public int obtenerNumeroHabitacion(Date fechaInicio, Date fechaFin, int capacidad) throws NoHayHabitacionesException {
+	public int obtenerNumeroHabitacion(Date fechaInicio, Date fechaFin, int capacidad)
+			throws NoHayHabitacionesException {
 		int numeroHabitacion = 0;
 		if (habitaciones.isEmpty()) {
 			throw new NoHayHabitacionesException("No hay habitaciones en la base de datos");
 		} else {
 			for (Habitacion hab : habitaciones.values()) {
 				if (hab.getCapacidad() >= capacidad) { // buscar una habitacion q cumpla con la capacidad
-					if (hab.comprobarFechas(fechaInicio, fechaFin) == true) { // comprobar si se puede ocupar en esas fechas
+					if (hab.comprobarFechas(fechaInicio, fechaFin) == true) { // comprobar si se puede ocupar en esas
+																				// fechas
 						return hab.getNumero();
 					}
 				}
@@ -236,13 +246,16 @@ public class Hotel {
 		Scanner scanner = new Scanner(System.in); // Scanner para ingreso por teclado
 		System.out.println("Ingrese DNI de la reserva");
 		dni = scanner.nextInt();
-		Reserva reserva = reservas.get(dni);
-		reserva.getNumeroHabitacion();
-		Habitacion hab = habitaciones.get(reserva.getNumeroHabitacion());
-		hab.setTarifa(999999); //prueba de que habitacion se modificaba en la base de datos
-		
+		if (reservas.containsKey(dni)) { // comprobar q exista en la base de datos sino retorna null
+			Reserva reserva = reservas.get(dni);
+			Habitacion hab = habitaciones.get(reserva.getNumeroHabitacion());
+			hab.ocupar(reserva.getFechaEntrada(), reserva.getFechaSalida(), reserva.getPasajero());
+		} else {
+			System.out.println("NO HAY RESERVAS");
+		}
+
 		// borrar reserva de la base de datos
-		//incompleto claramente
+		// incompleto claramente
 	}
 
 	public void checkOut(Reserva r) {
