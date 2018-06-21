@@ -1,5 +1,6 @@
 package clases;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Pasajero {
@@ -31,5 +32,12 @@ public class Pasajero {
 	public int getDni() {
 		return dni;
 	}
-
+	
+	public void registrarEstadia (int numeroHabitacion,Date fechaIn,Date fechaOut) {
+		Fecha fechas = new Fecha(fechaIn, fechaOut);
+		Registro reg = new Registro(numeroHabitacion, fechas);
+		registro.add(reg);
+		
+	}
+	// hacer pasajero To string
 }

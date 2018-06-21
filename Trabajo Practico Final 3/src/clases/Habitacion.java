@@ -53,11 +53,26 @@ public class Habitacion {
 
 	public void desocupar() {
 		if (disponible == false) {
-			disponible=false;
+			disponible = false;
 			ocupante = null;
 		} else {
 			System.out.println("LA HABITACION YA ESTA DESOCUPADA");
 		}
+	}
+
+	/**
+	 * Calcular el costo en base al dia que entra y sale
+	 * 
+	 * @param fechaIn
+	 * @param fechaOut
+	 * @return el costo en base a la tarifa de la habitacion.
+	 */
+	public double calcularCosto(Date fechaIn, Date fechaOut) {
+		double costo;
+		Fecha fechas = new Fecha(fechaIn, fechaOut);
+		costo = fechas.cantidadDias() * tarifa;
+		return costo;
+
 	}
 
 	/**
@@ -66,13 +81,16 @@ public class Habitacion {
 	 */
 	public void eliminarFechasOcupadas() {
 		// ver si esto es necesario
+		// creo q no , asi mantenemos registro de todas las fechas ocupadas
 	}
-	
-	public void agregarReserva () {
+
+	public void agregarReserva() {
 		// no creo que este sea necesario
+		// tampoco, seria equivalente a agregarfechareservada
 	}
-	public void agregarFechaReservada () {
-		
+
+	public void agregarFechaReservada(Fecha fechas) {
+		fechasOcupadas.add(fechas);
 	}
 
 	/**
@@ -96,9 +114,8 @@ public class Habitacion {
 			if (fechaEntrada.before(fe.getFechaOut()) && fechaSalida.after(fe.getFechaOut())) {
 				flag = false;
 			}
-			if (!fechaEntrada.before(fe.getFechaIn()) && !fechaSalida.after(fe.getFechaOut())) { // si ambas fechas de
-																									// entrada y salida
-																									// son iguales
+			if (!fechaEntrada.before(fe.getFechaIn()) && !fechaSalida.after(fe.getFechaOut())) { // si ambas fechas
+				// de entrada y salida son iguales
 				flag = false;
 			}
 		}

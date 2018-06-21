@@ -36,4 +36,9 @@ public class Reserva {
 	public Pasajero getPasajero() {
 		return pasajero;
 	}
+	@Override
+	public String toString () {
+		return "Pasajero: " + pasajero.toString() + "\nCantidad Pasajeros: " + cantidadPasajeros + 
+				"\nFechas: " + fechas.toString() + "\nNumero de habitacion: " + numeroHabitacion;
+	}
 }

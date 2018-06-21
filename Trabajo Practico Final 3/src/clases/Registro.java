@@ -1,25 +1,20 @@
 package clases;
 
 public class Registro {
-	private Habitacion habitacion;
+	private int numeroHabitacion;
 	private Fecha fechas;
 	
-	public Registro(Habitacion habitacion, Fecha fechas) {
+	public Registro(int numeroHabitacion, Fecha fechas) {
 		super();
-		this.habitacion = habitacion;
+		this.numeroHabitacion = numeroHabitacion;
 		this.fechas = fechas;
 	}
 
-	public Habitacion getHabitacion() {
-		return habitacion;
+	public int getnumeroHabitacion() {
+		return numeroHabitacion;
 	}
 	
-	public void mostrarHabitaciones(){
-		habitacion.mostrar();
-	}
-	
-    
-	
+    // hacer to String
 	
 	
 
