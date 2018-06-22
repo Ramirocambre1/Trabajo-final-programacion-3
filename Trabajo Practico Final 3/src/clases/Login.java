@@ -16,6 +16,8 @@ import java.util.Scanner;
 
 import com.sun.org.apache.xml.internal.security.encryption.AgreementMethod;
 
+import jdk.management.resource.internal.inst.SocketOutputStreamRMHooks;
+
 public class Login {
 
 	ArrayList<Usuario> usuarios;
@@ -42,7 +44,8 @@ public class Login {
 				if (username2.equals(usuario.getNombre())) {
 					flag = true; // indicamos que encontramos el usuario
 					System.out.println("Password: ");
-					String pass2 = Hash.sha1(scanner.nextLine()); // Encripta Password.
+					String pass2 = Hash.sha1(scanner.nextLine()); // Encripta
+																	// Password.
 					if (pass2.equals(usuario.getPassword())) {
 						System.out.println("Acceso Correcto...");
 						e = usuario;
@@ -56,7 +59,6 @@ public class Login {
 			if (flag == false) { // si no se encontro el usuario
 				System.out.println("El Usuario no existe, ingrese uno valido!");
 			}
-		
 
 		}
 		return e;
@@ -90,6 +92,7 @@ public class Login {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Usuario creado Exitosamente!");
 		// scanner.close();
 
 	}
@@ -120,6 +123,8 @@ public class Login {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Usuario creado Exitosamente!");
+
 		// scanner.close(); // comentado porq hacia fallar el scanner en el main
 
 	}
@@ -152,6 +157,8 @@ public class Login {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Usuario creado Exitosamente!");
+
 		// scanner.close();
 
 	}
@@ -230,9 +237,10 @@ public class Login {
 			System.out.println("FIN de la carga archivo to array");
 		} finally {
 			if (ois != null) {
-				ois.close(); // se tuvo que poner esto sino saltaba null pointer en caso de leer archivo inexistente
+				ois.close(); // se tuvo que poner esto sino saltaba null pointer
+								// en caso de leer archivo inexistente
 			}
-			
+
 		}
 
 	}
@@ -245,7 +253,8 @@ public class Login {
 		Console console = System.console();
 		String username = null;
 		username = scanner.next(); // Guarda Username
-
+		boolean flag = false; // para no seguir con el programa si no encuentro
+								// al usuario
 		for (Usuario array : usuarios) {
 
 			String nombre = array.getNombre();
@@ -254,34 +263,38 @@ public class Login {
 
 				e = array;
 				usuarios.remove(e);
+				flag = true;
 
 			} else {
 				System.out.println("No existe el usuario, ingrese uno valido:");
 			}
 		}
-		int opcion = 0;
-		System.out.println("1-Modificar Usuario");
-		System.out.println("2-Modificar Password");
-		System.out.println("Ingrese una opcion:");
-		opcion = scanner.nextInt(); // Guarda opcion
-		if (opcion == 1) {
-			System.out.println("Ingrese nuevo usuario");
-			String username2 = null;
-			username2 = scanner.next(); // Guarda Username
-			e.setNombre(username2);
-		}
-		if (opcion == 2) {
-			System.out.println("Ingrese nueva Password");
-			String pass = null;
-			pass = Hash.sha1(scanner.next()); // Encripto Pass
-			e.setPassword(pass);
+		if (flag == true) {
+			int opcion = 0;
+			System.out.println("1-Modificar Usuario");
+			System.out.println("2-Modificar Password");
+			System.out.println("Ingrese una opcion:");
+			opcion = scanner.nextInt(); // Guarda opcion
+			if (opcion == 1) {
+				System.out.println("Ingrese nuevo usuario");
+				String username2 = null;
+				username2 = scanner.next(); // Guarda Username
+				e.setNombre(username2);
+			}
+			if (opcion == 2) {
+				System.out.println("Ingrese nueva Password");
+				String pass = null;
+				pass = Hash.sha1(scanner.next()); // Encripto Pass
+				e.setPassword(pass);
 
-		}
-		cargarUsuario(e);
-		try {
-			pasarToarchivo();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			}
+			cargarUsuario(e);
+			try {
+				pasarToarchivo();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
 		}
 		// scanner.close();
 	}

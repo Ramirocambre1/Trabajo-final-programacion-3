@@ -31,7 +31,7 @@ public class Reserva implements Serializable {
 	}
 	/*
 	 * public void calcularCostos(int cantidadDias) { calcular cantidad de dias q
-	 * estuvo en la habitacion }
+	 * estuvo en la habitacion } // ya fue resuelto
 	 */
 
 	public Pasajero getPasajero() {

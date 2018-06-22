@@ -37,7 +37,8 @@ public class Habitacion implements Serializable {
 
 	public void ocupar(Date fechaEntrada, Date fechaSalida, Pasajero ocupante) {
 		if (disponible == true) {
-			boolean flag = comprobarFechas(fechaEntrada, fechaSalida);
+			boolean flag = true;
+			//boolean flag = comprobarFechas(fechaEntrada, fechaSalida); // esta comprobacion ya se hace al crear reserva /borrar
 			if (flag == true) { // si es ocupable
 				disponible = false; // ya no se puede ocupar
 				this.ocupante = ocupante;
@@ -85,10 +86,6 @@ public class Habitacion implements Serializable {
 		// creo q no , asi mantenemos registro de todas las fechas ocupadas
 	}
 
-	public void agregarReserva() {
-		// no creo que este sea necesario
-		// tampoco, seria equivalente a agregarfechareservada
-	}
 
 	public void agregarFechaReservada(Fecha fechas) {
 		fechasOcupadas.add(fechas);
@@ -126,7 +123,14 @@ public class Habitacion implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Numero:" + numero + "\nCapacidad: " + capacidad + "\nDisponibilidad: " + disponible
+		String disponibilidad;
+		if (disponible = true){
+			disponibilidad = "Disponible";
+		}
+		else{
+			disponibilidad = "Ocupada";
+		}
+		return "Numero:" + numero + "\nCapacidad: " + capacidad + "\nEstado: " + disponibilidad
 				+ "\nFechas Ocupadas: " + fechasOcupadas.toString() + "\nTarifa: " + tarifa + "\nDetalle: " + detalle;
 	}
 

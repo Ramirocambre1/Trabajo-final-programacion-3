@@ -18,10 +18,14 @@ import clases.Recepcionista;
 import clases.Usuario;
 import excepciones.NoHayHabitacionesException;
 import excepciones.NoHayPasajerosException;
+import excepciones.NoHayReservasException;
+import excepciones.NoSePudoReservarException;
 import excepciones.PasajeroYaExisteException;
+import jdk.management.resource.internal.inst.SocketOutputStreamRMHooks;
 
 // USER: admin PASS: 1234
 // USER: allan pass 12345
+// user: recep pass: 1234
 public class Main {
 
 	public static void main(String[] args) {
@@ -40,7 +44,7 @@ public class Main {
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
-		login.listarUsuarios(); // sacar (invocacion de prueba )
+		//login.listarUsuarios(); // sacar (invocacion de prueba )
 		Usuario us = login.Loguear();
 		int opcion = 0;
 		Menu menu1 = new Menu();
@@ -110,12 +114,14 @@ public class Main {
 					case 4: {// Mostrar habitaciones ocupadas
 						System.out.println("------------ OCUPADAS ----------");
 						hotel.mostrarOcupadas();
-					}
+					}break;
 					case 5: {// Reservar una habitacion
 						try {
 							hotel.nuevaReserva();
 						} catch (NoHayHabitacionesException e) {
 							System.out.println(e.getMessage());
+						} catch (NoSePudoReservarException ex) {
+							System.out.println(ex.getMessage());
 						}
 					}
 						break;
@@ -148,8 +154,14 @@ public class Main {
 						hotel.agregarHabitacion(habitacion);
 					}
 						break;
-
-					case 9: {// Menu de pasajeros
+					case 9:{ // listar Reservas
+							try {
+								hotel.listarReservas();
+							} catch (NoHayReservasException e) {
+								System.out.println(e.getMessage());
+							}
+					}break;
+					case 10: {// Menu de pasajeros
 						menu1.menuPasajero();
 						menu1.ingresaOpcion();
 						int opcionadmin3 = 0;
@@ -226,6 +238,8 @@ public class Main {
 						hotel.nuevaReserva();
 					} catch (NoHayHabitacionesException e) {
 						System.out.println(e.getMessage());
+					} catch (NoSePudoReservarException ex) {
+						System.out.println(ex.getMessage());
 					}
 				}
 					break;
@@ -314,6 +328,8 @@ public class Main {
 						hotel.nuevaReserva();
 					} catch (NoHayHabitacionesException e) {
 						System.out.println(e.getMessage());
+					} catch (NoSePudoReservarException ex) {
+						System.out.println(ex.getMessage());
 					}
 				}
 					break;
@@ -339,7 +355,7 @@ public class Main {
 			}
 		}
 
-		System.out.println("GRACIAS POR UTILIZAR ESTE PROGRAMA");
+		System.out.println("GRACIAS VUELVA PRONTOSS");
 	}
 
 }

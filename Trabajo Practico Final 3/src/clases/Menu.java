@@ -1,5 +1,7 @@
 package clases;
 
+import jdk.management.resource.internal.inst.SocketOutputStreamRMHooks;
+
 public class Menu {
 	
 	public void menuAdmin()
@@ -34,8 +36,9 @@ public class Menu {
 		System.out.println("6.Check In");
 		System.out.println("7.Check Out");
 		System.out.println("8.Agregar Habitacion");
-		System.out.println("9.Menu de pasajeros");
-		System.out.println("10.Volver");
+		System.out.println("9.Listar Reservas");
+		System.out.println("10.Menu de pasajeros");
+		System.out.println("11.Volver");
 		
 	}
 	
