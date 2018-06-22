@@ -1,9 +1,10 @@
 package clases;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Pasajero {
+public class Pasajero implements Serializable{
 	private String nombre;
 	private String apellido;
 	private int dni;
@@ -26,7 +27,7 @@ public class Pasajero {
 	public void mostrar () {
 		System.out.println("-------- Pasajero --------------");
 		System.out.println("Nombre: " + nombre + "\nApellido: " + apellido + "\nDNI: "+ dni);
-		System.out.println("Origen" + origen + "\nDomicilio: "+ domicilio + "\nTelefono: " + telefono);
+		System.out.println("Origen: " + origen + "\nDomicilio: "+ domicilio + "\nTelefono: " + telefono);
 	}
 
 	public int getDni() {
@@ -39,5 +40,10 @@ public class Pasajero {
 		registro.add(reg);
 		
 	}
-	// hacer pasajero To string
+	
+	public String toString() {
+		return "Nombre: " + nombre + "\nApellido: " + apellido + "\nDNI: " + dni + "\nOrigen: " +
+	origen + "\nDomicilio: " + domicilio + "\nRegistro: " + registro.toString() + "\nTelefono: "+ 
+				telefono;
+	}
 }

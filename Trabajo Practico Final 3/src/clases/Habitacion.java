@@ -1,12 +1,12 @@
 package clases;
 
 import java.util.ArrayList;
-
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.sound.midi.Soundbank;
 
-public class Habitacion {
+public class Habitacion implements Serializable {
 
 	private int numero;
 	private int capacidad;
@@ -55,6 +55,7 @@ public class Habitacion {
 		if (disponible == false) {
 			disponible = false;
 			ocupante = null;
+			System.out.println("HABITACION DESOCUPADA EXITOSAMENTE!");
 		} else {
 			System.out.println("LA HABITACION YA ESTA DESOCUPADA");
 		}

@@ -7,10 +7,19 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Map.Entry;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.sound.midi.Soundbank;
 
 import excepciones.NoHayHabitacionesException;
+import excepciones.NoHayPasajerosException;
 import excepciones.NoHayReservasException;
 import excepciones.PasajeroYaExisteException;
 
@@ -28,11 +37,17 @@ public class Hotel {
 		pasajeros = new HashMap<Integer, Pasajero>();
 		this.nombre = nombre;
 		this.direccion = direccion;
-		// this.recepcionista = recepcionista; // por ahora se descarta
 	}
 
 	public void agregarHabitacion(Habitacion e) {
-		habitaciones.put(e.getNumero(), e);
+		if (habitaciones.containsKey(e.getNumero())){
+			System.out.println("EL NUMERO DE HABITACION INGRESADO YA EXISTE");
+		}
+		else {
+				habitaciones.put(e.getNumero(), e);
+				System.out.println("HABITACION AGREGADA CORRECTAMENTE");
+				habitacionesToArchivo();
+		}
 	}
 
 	/**
@@ -79,8 +94,14 @@ public class Hotel {
 	 * Mostrar todas las habitaciones
 	 */
 	public void listarHabitaciones() {
-		mostrarDisponible();
+		if (habitaciones.isEmpty() == true){
+			System.out.println("NO HAY HABITACIONES");
+		}
+		else {
+			mostrarDisponible();
 		mostrarOcupadas();
+		}
+		
 	}
 
 	public void cambiarCostos(int numeroHabitacion, int tarifaNueva) {
@@ -105,7 +126,7 @@ public class Hotel {
 		Iterator iterator = reservas.entrySet().iterator(); // para recorrer un map hay q usar un iterator
 		while (iterator.hasNext() && flag == false) {
 			Map.Entry me = (Map.Entry) iterator.next();
-			if (me.getKey() == numeroReserva) {
+			if (me.getKey().equals(numeroReserva)) {
 				System.out.println(me.getValue().toString()); // obtener la reserva y mostrarla
 				flag = true;
 			}
@@ -125,10 +146,10 @@ public class Hotel {
 			System.out.println("///////");
 		}
 
-
 	}
 
 	public void nuevaReserva() throws NoHayHabitacionesException {
+		System.out.println("--------------- NUEVA RESERVA ---------------");
 		Scanner scanner = new Scanner(System.in); // Scanner para ingreso por teclado
 		Pasajero pasajero;
 		System.out.println("Ingrese DNI: ");
@@ -137,13 +158,14 @@ public class Hotel {
 			pasajero = pasajeros.get(dni);
 		} else {
 			try {
+				System.out.println("Pasajero no registrado! Registar pasajero: ");
 				registrarPasajero();
 			} catch (PasajeroYaExisteException e) {
 				e.printStackTrace();
 			}
 			pasajero = pasajeros.get(dni);
 		}
-		System.out.println("Ingrese la cantidad de pasajeros");
+		System.out.println("Ingrese la cantidad de pasajeros para la habitacion");
 		int cantidadPasajeros = scanner.nextInt();
 		System.out.println("Ingrese año de entrada: ");
 		int anio = scanner.nextInt();
@@ -166,6 +188,7 @@ public class Hotel {
 		reservarHabitacion(numeroHabitacion, fechas);
 		Reserva reserva = new Reserva(pasajero, cantidadPasajeros, fechas, numeroHabitacion);
 		reservas.put(pasajero.getDni(), reserva); // la identificacion de las reservas es el dni de los pasajeros
+		reservasToArchivo(); // actualizamos el archivo de reservas
 
 	}
 
@@ -178,8 +201,9 @@ public class Hotel {
 		boolean flag = false;
 		Iterator iterator = habitaciones.entrySet().iterator(); // para recorrer un map hay q usar un iterator
 		while (iterator.hasNext() && flag == false) {
+
 			Map.Entry me = (Map.Entry) iterator.next();
-			if (me.getKey() == numeroHabitacion) {
+			if (me.getKey().equals(numeroHabitacion)) {
 				Habitacion hab = (Habitacion) me.getValue();
 				hab.agregarFechaReservada(fechas);
 				flag = true;
@@ -214,8 +238,7 @@ public class Hotel {
 	 * @return el numero de la habitacion disponible
 	 * @throws NoHayHabitacionesException
 	 */
-	public int obtenerNumeroHabitacion(Date fechaInicio, Date fechaFin, int capacidad)
-			throws NoHayHabitacionesException {
+	public int obtenerNumeroHabitacion(Date fechaInicio, Date fechaFin, int capacidad)throws NoHayHabitacionesException {
 		int numeroHabitacion = 0;
 		if (habitaciones.isEmpty()) {
 			throw new NoHayHabitacionesException("No hay habitaciones en la base de datos");
@@ -255,6 +278,8 @@ public class Hotel {
 		int telefono = scanner.nextInt();
 		Pasajero pas = new Pasajero(nombre, apellido, dni, origen, domicilio, telefono);
 		pasajeros.put(dni, pas);
+		pasajerosToArchivo(); // actualizamos el archivo pasajeros
+		System.out.println("PASAJERO REGISTRADO!");
 	}
 
 	/**
@@ -284,16 +309,17 @@ public class Hotel {
 			hab.ocupar(reserva.getFechaEntrada(), reserva.getFechaSalida(), reserva.getPasajero());
 			System.out.println("Habitacion Ocupada Exitosamente!");
 		} else {
-			System.out.println("NO HAY RESERVAS");
+			System.out.println("NO HAY RESERVAS CON EL DNI INGRESADO");
 		}
-
-		// borrar reserva de la base de datos
-		// incompleto claramente
+		
 		// rehacerlo como checkout
 	}
+
 	/**
-	 * Desocupa la habitacion, registra la estadia en el pasajero y retorna el costo de la estadia
-	 * @param numeroReserva , equivalente al dni del pasajero
+	 * Desocupa la habitacion, registra la estadia en el pasajero y retorna el costo
+	 * de la estadia
+	 * 
+	 * @param numeroReserva, equivalente al dni del pasajero
 	 * @return El costo de la estadia
 	 */
 	public double checkOut(int numeroReserva) {
@@ -307,17 +333,245 @@ public class Hotel {
 			// registrar la estadia adentro de pasajero
 			Pasajero pasajero = pasajeros.get(reserva.getPasajero().getDni()); // pasamos el dni como clave
 			pasajero.registrarEstadia(reserva.getNumeroHabitacion(), reserva.getFechaEntrada(),reserva.getFechaSalida());
+			reservas.remove(numeroReserva);
+			reservasToArchivo(); // actualizamos el archivo reservas
 		} else {
 			System.out.println("NO HAY RESERVAS");
 		}
 		return costo;
 	}
-	
-	public void listarPasajeros () {
-		
+
+	/**
+	 * Muestra por pantalla todos los pasajeros registrados en la base de datos del
+	 * hotel
+	 * 
+	 * @throws NoHayPasajerosException
+	 */
+	public void listarPasajeros() throws NoHayPasajerosException {
+		if (pasajeros.isEmpty() == true) {
+			throw new NoHayPasajerosException("NO HAY PASAJEROS!");
+		}
+		System.out.println("------------- PASAJEROS -----------");
+		for (Pasajero pas : pasajeros.values()) {
+			System.out.println(pas.toString());
+			System.out.println("~~~~~~~~~~~~~~~~~~~");
+		}
 	}
-	// ?
-	public void desplegarMenu(Usuario us) {
+
+	public void leerArchivoHabitaciones() throws ClassNotFoundException {
+		File archivoHabitaciones = new File("habitaciones.dat");
+		FileInputStream fileobj = null;
+		ObjectInputStream objin = null; // Input para operaciones de lectura de archivo (entrada)
+		try {
+			fileobj = new FileInputStream(archivoHabitaciones);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			objin = new ObjectInputStream(fileobj);
+			Habitacion hab;
+			while ((hab = (Habitacion) objin.readObject()) != null) {
+				habitaciones.put(hab.getNumero(), hab);
+			}
+		} catch (EOFException e2) {
+			// TODO: handle exception
+		} catch (IOException io) {
+			System.out.println("FIN de la lectura del archivo de habitaciones");
+		} finally {
+			try {
+				if (objin != null) {
+					objin.close();
+				fileobj.close();
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public void habitacionesToArchivo() {
+		if (habitaciones.isEmpty() == false) { // si habitaciones esta vacia, se sobreescribira vacio el archivo y
+												// podriamos perder datos
+
+			File archivoHabitaciones = new File("habitaciones.dat");
+			FileOutputStream fileobj = null;
+			ObjectOutputStream objout = null;
+			try {
+				fileobj = new FileOutputStream(archivoHabitaciones);
+				objout = new ObjectOutputStream(fileobj);
+				for (Habitacion hab : habitaciones.values()) {
+					objout.writeObject(hab);
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("Habitaciones cargadas correctamente en el archivo");
+		} else {
+			System.out.println("NO HAY HABITACIONES PARA PASAR AL ARCHIVO!");
+		}
+	}
+
+	public void leerArchivoPasajeros() throws ClassNotFoundException {
+		File archivoPasajeros = new File("pasajeros.dat");
+		FileInputStream fileobj = null;
+		ObjectInputStream objin = null; // Input para operaciones de lectura de archivo (entrada)
+		try {
+			fileobj = new FileInputStream(archivoPasajeros);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			objin = new ObjectInputStream(fileobj);
+			Pasajero pas;
+			while ((pas = (Pasajero) objin.readObject()) != null) {
+				pasajeros.put(pas.getDni(), pas);
+			}
+		} catch (EOFException e2) {
+			// TODO: handle exception
+		} catch (IOException io) {
+			System.out.println("FIN de la lectura del archivo de Pasajeros");
+		} finally {
+			try {
+				if (objin != null) { // se tuvo que poner esto sino saltaba null pointer en caso de leer archivo inexistente
+					objin.close(); 
+				fileobj.close();
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void pasajerosToArchivo() {
+		if (pasajeros.isEmpty() == false) { // si pasajeros esta vacia, se sobreescribira vacio el archivo y podriamos
+											// perder datos
+
+			File archivoPasajeros = new File("pasajeros.dat");
+			FileOutputStream fileobj = null;
+			ObjectOutputStream objout = null;
+			try {
+				fileobj = new FileOutputStream(archivoPasajeros);
+				objout = new ObjectOutputStream(fileobj);
+				for (Pasajero pas : pasajeros.values()) {
+					objout.writeObject(pas);
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("Pasajeros cargados correctamente en el archivo");
+		} else {
+			System.out.println("NO HAY PASAJEROS PARA PASAR AL ARCHIVO!");
+		}
+
+	}
+
+	public void leerArchivoReservas() throws ClassNotFoundException {
+		File archivoReservas = new File("reservas.dat");
+		FileInputStream fileobj = null;
+		ObjectInputStream objin = null; // Input para operaciones de lectura de archivo (entrada)
+		try {
+			fileobj = new FileInputStream(archivoReservas);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			objin = new ObjectInputStream(fileobj);
+			Reserva res;
+			while ((res = (Reserva) objin.readObject()) != null) {
+				reservas.put(res.getNumeroHabitacion(), res);
+			}
+		} catch (EOFException e2) {
+			// TODO: handle exception
+		} catch (IOException io) {
+			System.out.println("FIN de la lectura del archivo de Reservas");
+		} finally {
+			try {
+				if (objin != null) { // se tuvo que poner esto sino saltaba null pointer en caso de leer archivo inexistente
+					objin.close();
+				fileobj.close();
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void reservasToArchivo() {
+		if (pasajeros.isEmpty() == false) { // si pasajeros esta vacia, se sobreescribira vacio el archivo y podriamos
+											// perder datos
+
+			File archivoReservas = new File("reservas.dat");
+			FileOutputStream fileobj = null;
+			ObjectOutputStream objout = null;
+			try {
+				fileobj = new FileOutputStream(archivoReservas);
+				objout = new ObjectOutputStream(fileobj);
+				for (Reserva res : reservas.values()) {
+					objout.writeObject(res);
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("Reservas cargadas correctamente en el archivo");
+		} else {
+			System.out.println("NO HAY RESERVAS PARA PASAR AL ARCHIVO!");
+		}
+
+	}
+
+	/**
+	 * Lee los archivos de habitaciones, pasajeros y reservas, y los pasa a sus
+	 * respectivas colecciones
+	 * 
+	 * @throws ClassNotFoundException
+	 */
+	public void leerArchivos() throws ClassNotFoundException {
+		File archivoReservas = new File("reservas.dat");
+		File archivoPasajeros = new File("pasajeros.dat");
+		File archivoHabitaciones = new File("habitaciones.dat");
+		try {
+			archivoHabitaciones.createNewFile();
+			archivoPasajeros.createNewFile();
+			archivoReservas.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		leerArchivoHabitaciones();
+		leerArchivoPasajeros();
+		leerArchivoReservas();
+	}
+
+	public void eliminarHabitacion() {
+		// si se llega con el tiempo
+	}
+
+	public void eliminarReserva() {
+
+	}
+
+	public void eliminarPasajero() {
 
 	}
 

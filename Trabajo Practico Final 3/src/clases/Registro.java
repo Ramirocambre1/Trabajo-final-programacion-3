@@ -1,6 +1,8 @@
 package clases;
 
-public class Registro {
+import java.io.Serializable;
+
+public class Registro implements Serializable{
 	private int numeroHabitacion;
 	private Fecha fechas;
 	
@@ -14,8 +16,10 @@ public class Registro {
 		return numeroHabitacion;
 	}
 	
-    // hacer to String
-	
+
+	public String toString() {
+		return "\nNumero de habitacion:" + "\nFechas: " + fechas.toString() + "\n--------------";	
+		}
 	
 
 }

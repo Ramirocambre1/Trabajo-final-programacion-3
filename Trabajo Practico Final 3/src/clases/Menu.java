@@ -6,7 +6,7 @@ public class Menu {
 	{
 		System.out.println("1.Menu de Usuario");
 		System.out.println("2.Menu de Hotel");
-		System.out.println("3.Volver");
+		System.out.println("3.Salir");
 		
 		
 	}
@@ -14,10 +14,12 @@ public class Menu {
 	public void menuUsuario()
 	{
 		System.out.println("---Menu del Usuario---");
-		System.out.println("1.Crear Nuevo Usuario");
-		System.out.println("2.Borrar Usuario");
-		System.out.println("3.Modificar Usuario");
-		System.out.println("4.Volver");
+		System.out.println("1.Crear Nuevo Administrador");
+		System.out.println("2.Crear Nuevo Cliente");
+		System.out.println("3.Crear Nuevo Recepcionista");
+		System.out.println("4.Borrar Usuario");
+		System.out.println("5.Modificar Usuario");
+		System.out.println("6.Volver");
 		
 	}
 	
@@ -29,9 +31,11 @@ public class Menu {
 		System.out.println("3.Mostrar Habitaciones Disponibles");
 		System.out.println("4.Mostrar Habitaciones Ocupadas");
 		System.out.println("5.Reservar Habitacion");
-		System.out.println("6.Consultar Habitacion");
-		System.out.println("7.Menu de pasajeros");
-		System.out.println("8.Volver");
+		System.out.println("6.Check In");
+		System.out.println("7.Check Out");
+		System.out.println("8.Agregar Habitacion");
+		System.out.println("9.Menu de pasajeros");
+		System.out.println("10.Volver");
 		
 	}
 	
@@ -39,10 +43,9 @@ public class Menu {
 	{
 		System.out.println("---Menu del Pasajero---");
 		System.out.println("1.Agregar Nuevo Pasajero");
-		System.out.println("2.CheckIn");
-		System.out.println("3.CheckOut");
-		System.out.println("4,Listar Pasajeros");
-		System.out.println("5.Volver");
+		System.out.println("2.Eliminar");
+		System.out.println("3.Listar Pasajeros");
+		System.out.println("4.Volver");
 	}
 	
 	public void menuLogeo()
@@ -68,9 +71,9 @@ public class Menu {
 	public void menuCliente()
 	{
 		System.out.println("---Menu del Cliente---");
-		System.out.println("1.Mostrar Habitacion:");
-		System.out.println("2.Ocupar Habitacion:");
-		System.out.println("3.Desocupar Habitacion:");
+		System.out.println("1.Reservar habitacion.");
+		System.out.println("2.Check In:");
+		System.out.println("3.Check out:");
 		System.out.println("4.Volver");
 		
 	}

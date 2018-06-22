@@ -1,9 +1,10 @@
 package clases;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Reserva {
+public class Reserva implements Serializable {
 
 	private Pasajero pasajero;
 	private int cantidadPasajeros;

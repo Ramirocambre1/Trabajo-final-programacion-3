@@ -1,6 +1,8 @@
 package clases;
 
-public  class Usuario {
+import java.io.Serializable;
+
+public  class Usuario implements Serializable{
 	
 	private String nombre;
 	private String password;
@@ -29,7 +31,7 @@ public  class Usuario {
 	public void setPassword(String password){
 		this.password=password;
 	}
-	public void mostrarUsuario1() {
+	public void mostrarUsuario() {
 		System.out.println("Nombre: " +nombre);
 		System.out.println("Password: " +password);
 	}
