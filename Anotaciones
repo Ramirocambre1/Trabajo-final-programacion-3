@@ -7,4 +7,25 @@ agregar double tarifa en el cosntructor de
 sacar Habitacion de "mostrar" en habitacion
 
 borrar disponibles de src
+------------------------------------- anotacion 22/ 6 dia de entrega -------------------
+
+modificar usuario  -  corregir 
+
+listar reservas - agregar al main // solucionado
+
+modificar print disponibilidad para q muestre si o no - en habitacion // solucionado
+
+check in - muestra habitacion ocupada exitosamente y no se puede ocupar a la vez // solucionado 
+
+modificar ocupar en habitacion
+
+reservas.contains dni en nueva reserva no funciona  // solucion , al leer de archivo se pasaba numero de habitacion como clave y no dni / / 
+
+arrreglado al querer reservar cuando no habia habitaciones para reservar ya que tenian fechas ocupadas /// antes se creaba la reserva igual
+
+en las reservas los años se cargan mas grandes de lo ingresado por teclado /// solucionado // el constructor de date le suma 1900 al año
+
+hab.comprobar fechas // error ahi, se hicieron 2 reservas en la misma fecha // solucion, al leer archivo de reservas, no se pasaban las fechas reservadas a las habitaciones (hacer la funcion )
+
+error, no se pueden hacer 2 reservas con el mismo numero de DNI (preguntar al profe)
 
