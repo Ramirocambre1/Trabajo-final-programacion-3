@@ -6,12 +6,14 @@ import java.util.ArrayList;
 
 public class Reserva implements Serializable {
 
+	private int numeroReserva;
 	private Pasajero pasajero;
 	private int cantidadPasajeros;
 	private Fecha fechas;
 	private int numeroHabitacion;
 
-	public Reserva(Pasajero pasajero, int cantidadPasajeros, Fecha fechas, int numeroHabitacion) {
+	public Reserva(int numeroReserva, Pasajero pasajero, int cantidadPasajeros, Fecha fechas, int numeroHabitacion) {
+		this.numeroReserva = numeroReserva;
 		this.pasajero = pasajero;
 		this.cantidadPasajeros = cantidadPasajeros;
 		this.fechas = fechas;
@@ -37,9 +39,14 @@ public class Reserva implements Serializable {
 	public Pasajero getPasajero() {
 		return pasajero;
 	}
+
+	public int getNumeroReserva() {
+		return numeroReserva;
+	}
+
 	@Override
-	public String toString () {
-		return "Pasajero: " + pasajero.toString() + "\nCantidad Pasajeros: " + cantidadPasajeros + 
-				"\nFechas: " + fechas.toString() + "\nNumero de habitacion: " + numeroHabitacion;
+	public String toString() {
+		return "Numero de reserva: " + numeroReserva + "\nPasajero: " + pasajero.toString() + "\nCantidad Pasajeros: "
+				+ cantidadPasajeros + "\nFechas: " + fechas.toString() + "\nNumero de habitacion: " + numeroHabitacion;
 	}
 }

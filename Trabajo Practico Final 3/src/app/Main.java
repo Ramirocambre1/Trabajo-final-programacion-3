@@ -44,6 +44,7 @@ public class Main {
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+		hotel.pasarReservasAHabitaciones(); // reservamos las habitaciones en base a las reservas que tenemos en archivos
 		//login.listarUsuarios(); // sacar (invocacion de prueba )
 		Usuario us = login.Loguear();
 		int opcion = 0;

@@ -32,6 +32,7 @@ public class Hotel {
 	private HashMap<Integer, Habitacion> habitaciones;
 	private HashMap<Integer, Reserva> reservas;
 	private HashMap<Integer, Pasajero> pasajeros; // base de datos de pasajeros
+	private int registroDeReservas;
 
 	public Hotel(String nombre, String direccion) {
 		habitaciones = new HashMap<Integer, Habitacion>();
@@ -74,9 +75,8 @@ public class Hotel {
 			}
 		}
 		/*
-		 * for (Map.Entry<Integer, Habitacion> hab : habitaciones.entrySet()) {
-		 * // para recorrer clave y valor
-		 * System.out.println(hab.getValue().toString()); }
+		 * for (Map.Entry<Integer, Habitacion> hab : habitaciones.entrySet()) { // para
+		 * recorrer clave y valor System.out.println(hab.getValue().toString()); }
 		 */
 	}
 
@@ -147,22 +147,24 @@ public class Hotel {
 			System.out.println("!No existe reserva a ese numero!");
 		}
 	}
+
 	/**
 	 * Muestra todas las reservas que se encuentren en la base de datos del hotel
+	 * 
 	 * @throws NoHayReservasException
 	 */
 	public void listarReservas() throws NoHayReservasException {
 		if (reservas.isEmpty() == true) {
-			throw new NoHayReservasException("Reservas Vacias");
+			throw new NoHayReservasException("\n!NO HAY RESERVAS!\n");
 		}
 		System.out.println("------------- RESERVAS ----------------");
 		for (Reserva res : reservas.values()) {
 			System.out.println(res.toString());
-			System.out.println("///////");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
 		}
 
 	}
-	
+
 	public void nuevaReserva() throws NoHayHabitacionesException, NoSePudoReservarException {
 		System.out.println("--------------- NUEVA RESERVA ---------------");
 		Scanner scanner = new Scanner(System.in); // Scanner para ingreso por
@@ -181,50 +183,46 @@ public class Hotel {
 			}
 			pasajero = pasajeros.get(dni);
 		}
-
-		if (reservas.containsKey(dni)) {
-			System.out.println("Ya se encuentra una reserva a ese DNI");
-		} else {
-			System.out.println("Ingrese la cantidad de pasajeros para la habitacion");
-			int cantidadPasajeros = scanner.nextInt();
-			System.out.println("Ingrese año de entrada: ");
-			int anio = scanner.nextInt();
-			anio = anio - 1900; // el constructor del date le suma 1900 al año
-			System.out.println("Ingrese mes de entrada: ");
-			int mes = scanner.nextInt();
-			mes = mes - 1; // en Date, los meses se ingresan de 0 a 11
-			System.out.println("Ingrese dia de entrada: ");
-			int dia = scanner.nextInt();
-			Date fechaIn = new Date(anio, mes, dia);
-			System.out.println("Ingrese año de salida: ");
-			anio = scanner.nextInt();
-			anio = anio - 1900;
-			System.out.println("Ingrese mes de salida: ");
-			mes = scanner.nextInt();
-			mes = mes - 1; // en Date, los meses se ingresan de 0 a 11
-			System.out.println("Ingrese dia de salida: ");
-			dia = scanner.nextInt();
-			Date fechaOut = new Date(anio, mes, dia);
-			Fecha fechas = new Fecha(fechaIn, fechaOut);
-			int numeroHabitacion = obtenerNumeroHabitacion(fechaIn, fechaOut, cantidadPasajeros);
-			if (numeroHabitacion == -1) { // significa q no se pudo encontrar
-											// una habitacion para esas fechas
-				throw new NoSePudoReservarException("No se pudo encontrar una habitacion para esas fechas!\n");
-			}
-			reservarHabitacion(numeroHabitacion, fechas);
-			Reserva reserva = new Reserva(pasajero, cantidadPasajeros, fechas, numeroHabitacion);
-			reservas.put(pasajero.getDni(), reserva); // la identificacion de
-														// las reservas es el
-														// dni de los pasajeros
-			reservasToArchivo(); // actualizamos el archivo de reservas
-
+		System.out.println("Ingrese la cantidad de pasajeros para la habitacion");
+		int cantidadPasajeros = scanner.nextInt();
+		System.out.println("Ingrese año de entrada: ");
+		int anio = scanner.nextInt();
+		anio = anio - 1900; // el constructor del date le suma 1900 al año
+		System.out.println("Ingrese mes de entrada: ");
+		int mes = scanner.nextInt();
+		mes = mes - 1; // en Date, los meses se ingresan de 0 a 11
+		System.out.println("Ingrese dia de entrada: ");
+		int dia = scanner.nextInt();
+		Date fechaIn = new Date(anio, mes, dia);
+		System.out.println("Ingrese año de salida: ");
+		anio = scanner.nextInt();
+		anio = anio - 1900;
+		System.out.println("Ingrese mes de salida: ");
+		mes = scanner.nextInt();
+		mes = mes - 1; // en Date, los meses se ingresan de 0 a 11
+		System.out.println("Ingrese dia de salida: ");
+		dia = scanner.nextInt();
+		Date fechaOut = new Date(anio, mes, dia);
+		Fecha fechas = new Fecha(fechaIn, fechaOut);
+		int numeroHabitacion = obtenerNumeroHabitacion(fechaIn, fechaOut, cantidadPasajeros);
+		if (numeroHabitacion == -1) { // significa q no se pudo encontrar
+										// una habitacion para esas fechas
+			throw new NoSePudoReservarException("No se pudo encontrar una habitacion para esas fechas!\n");
 		}
+		reservarHabitacion(numeroHabitacion, fechas);
+		int numeroReserva = generarNumeroReserva();
+		Reserva reserva = new Reserva(numeroReserva, pasajero, cantidadPasajeros, fechas, numeroHabitacion);
+		reservas.put(numeroReserva, reserva); // la identificacion de
+												// las reservas es el
+												// dni de los pasajeros
+		System.out.println("RESERVA EXITOSA. SU NUMERO DE RESERVA ES: " + numeroReserva);
+		reservasToArchivo(); // actualizamos el archivo de reservas
 
 	}
 
 	/**
-	 * Reservar una habitacion (Agrega las fechas al arreglo de fechas
-	 * reservadas dentro de la habitacion)
+	 * Reservar una habitacion (Agrega las fechas al arreglo de fechas reservadas
+	 * dentro de la habitacion)
 	 */
 	public void reservarHabitacion(Integer numeroHabitacion, Fecha fechas) {
 		// obtener la habitacion de la base de datos y pasarle por parametro la
@@ -249,8 +247,25 @@ public class Hotel {
 	}
 
 	/**
-	 * Consultar habitaciones entre 2 fecha y segun la capacidad. Los muestra
-	 * por pantalla.
+	 * Genera un numero de reserva aleatorio que no se encuentre ya en uso
+	 * 
+	 * @return
+	 */
+	public int generarNumeroReserva() {
+		boolean flag = false;
+		int numero = -1;
+		while (flag == false) {
+			numero = (int) (Math.random() * 1000);
+			if (reservas.containsKey(numero) != true) { // si el numero no está en uso en reservas
+				flag = true; // damos permiso para devolver ese numero
+			}
+		}
+		return numero;
+	}
+
+	/**
+	 * Consultar habitaciones entre 2 fecha y segun la capacidad. Los muestra por
+	 * pantalla.
 	 * 
 	 * @param fechaInicio
 	 *            fecha a partir de la que se quiere buscar una habitacion.
@@ -276,7 +291,7 @@ public class Hotel {
 			throws NoHayHabitacionesException {
 		int numeroHabitacion = -1;
 		if (habitaciones.isEmpty()) {
-			throw new NoHayHabitacionesException("No hay habitaciones en la base de datos");
+			throw new NoHayHabitacionesException("NO HAY HABITACIONES EN LA BASE DE DATOS");
 		} else {
 			for (Habitacion hab : habitaciones.values()) {
 				if (hab.getCapacidad() >= capacidad) { // buscar una habitacion
@@ -346,31 +361,31 @@ public class Hotel {
 
 	public void checkIn() { // hacer comprobaciones con reserva inexistente
 							// (excepcion)
-		int dni;
+		int numeroReserva;
 		Scanner scanner = new Scanner(System.in); // Scanner para ingreso por
 													// teclado
-		System.out.println("Ingrese DNI de la reserva");
-		dni = scanner.nextInt();
-		if (reservas.containsKey(dni)) { // comprobar q exista en la base de
-											// datos sino retorna null
-			Reserva reserva = reservas.get(dni);
+		System.out.println("Ingrese numero reserva");
+		numeroReserva = scanner.nextInt();
+		if (reservas.containsKey(numeroReserva)) { // comprobar q exista en la base de
+			// datos sino retorna null
+			Reserva reserva = reservas.get(numeroReserva);
 			Habitacion hab = habitaciones.get(reserva.getNumeroHabitacion());
 			hab.ocupar(reserva.getFechaEntrada(), reserva.getFechaSalida(), reserva.getPasajero());
 			// System.out.println("Habitacion Ocupada Exitosamente!"); // sacar
 			// , ya esta en habitacion
 		} else {
-			System.out.println("NO HAY RESERVAS CON EL DNI INGRESADO");
+			System.out.println("NO HAY RESERVAS A ESE NUMERO");
 		}
 
 		// rehacerlo como checkout
 	}
 
 	/**
-	 * Desocupa la habitacion, registra la estadia en el pasajero y retorna el
-	 * costo de la estadia
+	 * Desocupa la habitacion, registra la estadia en el pasajero y retorna el costo
+	 * de la estadia
 	 * 
 	 * @param numeroReserva,
-	 *            equivalente al dni del pasajero
+	 *            el numero de la reserva
 	 * @return El costo de la estadia
 	 */
 	public double checkOut(int numeroReserva) {
@@ -398,14 +413,14 @@ public class Hotel {
 			reservas.remove(numeroReserva);
 			reservasToArchivo(); // actualizamos el archivo reservas
 		} else {
-			System.out.println("NO HAY HABITACION OCUPADA CON EL DNI INGRESADO");
+			System.out.println("NO HAY HABITACION OCUPADA CON EL NUMERO DE RESERVA");
 		}
 		return costo;
 	}
 
 	/**
-	 * Muestra por pantalla todos los pasajeros registrados en la base de datos
-	 * del hotel
+	 * Muestra por pantalla todos los pasajeros registrados en la base de datos del
+	 * hotel
 	 * 
 	 * @throws NoHayPasajerosException
 	 */
@@ -558,14 +573,13 @@ public class Hotel {
 		try {
 			fileobj = new FileInputStream(archivoReservas);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			objin = new ObjectInputStream(fileobj);
 			Reserva res;
 			while ((res = (Reserva) objin.readObject()) != null) {
-				reservas.put(res.getPasajero().getDni(), res);
+				reservas.put(res.getNumeroReserva(), res);
 			}
 		} catch (EOFException e2) {
 			// TODO: handle exception
@@ -636,11 +650,20 @@ public class Hotel {
 		leerArchivoPasajeros();
 		leerArchivoReservas();
 	}
+
 	// funciones a partir ver si son necesarias
-	public void pasarReservasAHabitaciones (){
-		// luego de leer las reservas, pasar las fechas reservadas a las habitaciones que correspondan
-		
+	public void pasarReservasAHabitaciones() {
+		Fecha fechas;
+		for (Reserva res : reservas.values()) {
+			Habitacion hab = habitaciones.get(res.getNumeroHabitacion());
+			fechas = new Fecha(res.getFechaEntrada(), res.getFechaSalida());
+			hab.agregarFechaReservada(fechas);
+		}
+		// luego de leer las reservas, pasar las fechas reservadas a las habitaciones
+		// que correspondan
+
 	}
+
 	public void eliminarHabitacion() {
 		// determinar si es necesario
 	}

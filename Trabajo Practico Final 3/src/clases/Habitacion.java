@@ -54,7 +54,7 @@ public class Habitacion implements Serializable {
 
 	public void desocupar() {
 		if (disponible == false) {
-			disponible = false;
+			disponible = true;
 			ocupante = null;
 			System.out.println("HABITACION DESOCUPADA EXITOSAMENTE!");
 		} else {
