@@ -124,7 +124,7 @@ public class Habitacion implements Serializable {
 	@Override
 	public String toString() {
 		String disponibilidad;
-		if (disponible = true){
+		if (disponible == true){
 			disponibilidad = "Disponible";
 		}
 		else{

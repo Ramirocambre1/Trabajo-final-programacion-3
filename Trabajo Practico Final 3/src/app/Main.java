@@ -79,7 +79,9 @@ public class Main {
 					}
 						break;
 					case 4: {// borrar Usuario
-						System.out.println("HACER ESTO"); // hacer
+						System.out.println("Ingrese el usuario a eliminar: ");
+						String nombreUsuario = scanner.next();
+						login.eliminarUsuario(nombreUsuario);
 					}
 						break;
 					case 5: {// modificar usuario
@@ -87,11 +89,11 @@ public class Main {
 						login.modificarUsuario();
 					}
 						break;
-					case 6: // salir
-
+					case 6:{ // listar usuarios
+						login.listarUsuarios();
+					}break;
 					}
-				}
-					break;
+				}break;
 
 				case 2: {
 					menu1.menuHotel();
@@ -155,14 +157,26 @@ public class Main {
 						hotel.agregarHabitacion(habitacion);
 					}
 						break;
-					case 9:{ // listar Reservas
+					case 9: { // eliminar habitacion
+						System.out.println("--------------- ELIMINAR HABITACION -------------");
+						System.out.println("Ingrese el numero de habitacion a eliminar:");
+						int numeroHabitacion = scanner.nextInt();
+						hotel.eliminarHabitacion(numeroHabitacion);
+					}break;
+					case 10:{ // listar Reservas
 							try {
 								hotel.listarReservas();
 							} catch (NoHayReservasException e) {
 								System.out.println(e.getMessage());
 							}
 					}break;
-					case 10: {// Menu de pasajeros
+					case 11: { // eliminar reserva
+						System.out.println("--------------- ELIMINAR RESERVA  -------------");
+						System.out.println("Ingrese el numero de reserva a eliminar:");
+						int numeroReserva = scanner.nextInt();
+						hotel.eliminarReserva(numeroReserva);
+					}break;
+					case 12: {// Menu de pasajeros
 						menu1.menuPasajero();
 						menu1.ingresaOpcion();
 						int opcionadmin3 = 0;
@@ -178,6 +192,9 @@ public class Main {
 							break;
 						case 2: {// eliminar pasajero
 							System.out.println("--------- ELIMINACION DE PASAJERO --------");
+							System.out.println("Ingrese el dni del pasajero a eliminar");
+							int dni = scanner.nextInt();
+							hotel.eliminarPasajero(dni);
 						}
 							break;
 
@@ -273,8 +290,26 @@ public class Main {
 					hotel.agregarHabitacion(habitacion);
 				}
 					break;
-
-				case 9: {// Menu de pasajeros
+				case 9: { // eliminar habitacion
+					System.out.println("--------------- ELIMINAR HABITACION -------------");
+					System.out.println("Ingrese el numero de habitacion a eliminar:");
+					int numeroHabitacion = scanner.nextInt();
+					hotel.eliminarHabitacion(numeroHabitacion);
+				}break;
+				case 10: {// listar Reservas
+					try {
+						hotel.listarReservas();
+					} catch (NoHayReservasException e) {
+						System.out.println(e.getMessage());
+					}	
+				}break;
+				case 11: { // eliminar reserva
+					System.out.println("--------------- ELIMINAR RESERVA  -------------");
+					System.out.println("Ingrese el numero de reserva a eliminar:");
+					int numeroReserva = scanner.nextInt();
+					hotel.eliminarReserva(numeroReserva);
+				}break;
+				case 12: {// Menu de pasajeros
 					menu1.menuPasajero();
 					menu1.ingresaOpcion();
 					int opcionadmin3 = 0;
@@ -290,6 +325,9 @@ public class Main {
 						break;
 					case 2: {// eliminar pasajero
 						System.out.println("--------- ELIMINACION DE PASAJERO --------");
+						System.out.println("Ingrese el dni del pasajero a eliminar");
+						int dni = scanner.nextInt();
+						hotel.eliminarPasajero(dni);
 					}
 						break;
 
@@ -334,19 +372,9 @@ public class Main {
 					}
 				}
 					break;
-
-				case 2: {// check in
-					System.out.println("-------------- CHECK IN --------------");
-					hotel.checkIn();
-				}
-					break;
-
-				case 3: {// check out
-					System.out.println("-------------- CHECK OUT ---------------");
-					System.out.println("Ingrese numero de reserva: ");
-					int numeroReserva = scanner.nextInt();
-					double costo = hotel.checkOut(numeroReserva);
-					System.out.println("El costo de la estadía es: " + costo);
+				case 2: {// ver habitaciones disponibles
+					System.out.println("--------- DISPONIBLES --------");
+					hotel.mostrarDisponible();
 				}
 					break;
 					default: {

@@ -18,7 +18,7 @@ public class Registro implements Serializable{
 	
 
 	public String toString() {
-		return "\nNumero de habitacion:" + "\nFechas: " + fechas.toString() + "\n--------------";	
+		return "\nNumero de habitacion:" + numeroHabitacion + "\nFechas: " + fechas.toString() + "\n---";	
 		}
 	
 

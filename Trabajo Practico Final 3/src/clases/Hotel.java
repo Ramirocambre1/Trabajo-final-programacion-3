@@ -32,7 +32,6 @@ public class Hotel {
 	private HashMap<Integer, Habitacion> habitaciones;
 	private HashMap<Integer, Reserva> reservas;
 	private HashMap<Integer, Pasajero> pasajeros; // base de datos de pasajeros
-	private int registroDeReservas;
 
 	public Hotel(String nombre, String direccion) {
 		habitaciones = new HashMap<Integer, Habitacion>();
@@ -264,26 +263,11 @@ public class Hotel {
 	}
 
 	/**
-	 * Consultar habitaciones entre 2 fecha y segun la capacidad. Los muestra por
-	 * pantalla.
-	 * 
-	 * @param fechaInicio
-	 *            fecha a partir de la que se quiere buscar una habitacion.
-	 * @param fechaFin
-	 *            hasta que fecha se quiere buscar una habitacion.
-	 * @param capacidad
-	 *            de la habitacion
-	 */
-	public void consultarHabitaciones(Date fechaInicio, Date fechaFin, int capacidad) {
-
-	}
-
-	/**
 	 * Busca una habitacion disponible en base a las fechas y la capacidad
 	 * 
-	 * @param fechaInicio
-	 * @param fechaFin
-	 * @param capacidad
+	 * @param fechaInicio Fecha a partir de la que se quiere ocupar una habitacion
+	 * @param fechaFin hasta que fecha se quiere ocupar
+	 * @param capacidad cantidad de pasajeros que van a ocupar la habitaciones
 	 * @return el numero de la habitacion disponible
 	 * @throws NoHayHabitacionesException
 	 */
@@ -472,11 +456,6 @@ public class Hotel {
 	}
 
 	public void habitacionesToArchivo() {
-		if (habitaciones.isEmpty() == false) { // si habitaciones esta vacia, se
-												// sobreescribira vacio el
-												// archivo y
-												// podriamos perder datos
-
 			File archivoHabitaciones = new File("habitaciones.dat");
 			FileOutputStream fileobj = null;
 			ObjectOutputStream objout = null;
@@ -494,9 +473,7 @@ public class Hotel {
 				e.printStackTrace();
 			}
 			System.out.println("Habitaciones cargadas correctamente en el archivo");
-		} else {
-			System.out.println("NO HAY HABITACIONES PARA PASAR AL ARCHIVO!");
-		}
+			// en caso de error con archivos, puede ser xq se elimino el if y else no hay elementos para pasar a archivo
 	}
 
 	public void leerArchivoPasajeros() throws ClassNotFoundException {
@@ -537,10 +514,6 @@ public class Hotel {
 	}
 
 	public void pasajerosToArchivo() {
-		if (pasajeros.isEmpty() == false) { // si pasajeros esta vacia, se
-											// sobreescribira vacio el archivo y
-											// podriamos
-											// perder datos
 
 			File archivoPasajeros = new File("pasajeros.dat");
 			FileOutputStream fileobj = null;
@@ -559,9 +532,6 @@ public class Hotel {
 				e.printStackTrace();
 			}
 			System.out.println("Pasajeros cargados correctamente en el archivo");
-		} else {
-			System.out.println("NO HAY PASAJEROS PARA PASAR AL ARCHIVO!");
-		}
 
 	}
 
@@ -601,10 +571,6 @@ public class Hotel {
 	}
 
 	public void reservasToArchivo() {
-		if (pasajeros.isEmpty() == false) { // si pasajeros esta vacia, se
-											// sobreescribira vacio el archivo y
-											// podriamos
-											// perder datos
 
 			File archivoReservas = new File("reservas.dat");
 			FileOutputStream fileobj = null;
@@ -616,17 +582,13 @@ public class Hotel {
 					objout.writeObject(res);
 				}
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.out.println("Reservas cargadas correctamente en el archivo");
-		} else {
-			System.out.println("NO HAY RESERVAS PARA PASAR AL ARCHIVO!");
-		}
-
+		
 	}
 
 	/**
@@ -640,7 +602,7 @@ public class Hotel {
 		File archivoPasajeros = new File("pasajeros.dat");
 		File archivoHabitaciones = new File("habitaciones.dat");
 		try {
-			archivoHabitaciones.createNewFile();
+			archivoHabitaciones.createNewFile(); // creamos los archivos para evitar error al leer archivo inexistente
 			archivoPasajeros.createNewFile();
 			archivoReservas.createNewFile();
 		} catch (IOException e) {
@@ -652,6 +614,11 @@ public class Hotel {
 	}
 
 	// funciones a partir ver si son necesarias
+	/**
+	 * Pasa todas las fechas de cada reserva, a su correspondiente habitacion para asi reservarlas
+	 * (esta funcion es mas que nada para despues de leer el archivo de reservas , y asi actualizar
+	 * las fechas reservadas de las habitaciones )
+	 */
 	public void pasarReservasAHabitaciones() {
 		Fecha fechas;
 		for (Reserva res : reservas.values()) {
@@ -659,22 +626,67 @@ public class Hotel {
 			fechas = new Fecha(res.getFechaEntrada(), res.getFechaSalida());
 			hab.agregarFechaReservada(fechas);
 		}
-		// luego de leer las reservas, pasar las fechas reservadas a las habitaciones
-		// que correspondan
 
 	}
-
-	public void eliminarHabitacion() {
-		// determinar si es necesario
+	
+	public void eliminarPasajero(int dni) {
+		boolean flag = false;
+		Iterator iterator = pasajeros.entrySet().iterator(); // p/ recorrer map hay q usar iterator
+		while (iterator.hasNext() && flag == false) {
+			Map.Entry me = (Map.Entry) iterator.next();
+			if (me.getKey().equals(dni)) {
+				pasajeros.remove(dni);
+				flag = true;
+			}
+		}
+		if (flag == true) {
+			System.out.println("\nPASAJERO ELIMINADO CORRECTAMENTE\n");
+			pasajerosToArchivo(); // actualizamos el archivo
+		}else {
+			System.out.println("\n!NO EXISTE EL PASAJERO!\n");
+		}
+	}
+	public void eliminarHabitacion(int numeroHabitacion) {
+		boolean flag = false;
+		Iterator iterator = habitaciones.entrySet().iterator(); // p/ recorrer map hay q usar iterator
+		while (iterator.hasNext() && flag == false) {
+			Map.Entry me = (Map.Entry) iterator.next();
+			if (me.getKey().equals(numeroHabitacion)) {
+				Habitacion hab = (Habitacion) me.getValue();
+				if (hab.getDisponible() == true ) { // si la habitacion no esta ocupada
+					habitaciones.remove(numeroHabitacion);
+					flag = true;
+				}
+				
+			}
+		}
+		if (flag == true) {
+			System.out.println("\nHABITACION ELIMINADA CORRECTAMENTE\n");
+			habitacionesToArchivo(); // actualizamos el archivo
+		}else {
+			System.out.println("\n!NO SE PUDO ELIMINAR. HABITACION OCUPADA O NO EXISTE!\n");
+		}
 	}
 
-	public void eliminarReserva() {
-
+	public void eliminarReserva(int numeroReserva) {
+		boolean flag = false;
+		Iterator iterator = reservas.entrySet().iterator(); // p/ recorrer map hay q usar iterator
+		while (iterator.hasNext() && flag == false) {
+			Map.Entry me = (Map.Entry) iterator.next();
+			if (me.getKey().equals(numeroReserva)) {
+				reservas.remove(numeroReserva);
+				flag = true;
+			}
+		}
+		if (flag == true) {
+			System.out.println("\nRESERVA ELIMINADA CORRECTAMENTE\n");
+			reservasToArchivo(); // actualizamos el archivo
+		}else {
+			System.out.println("\n!NO EXISTE LA RESERVA!\n");
+		}
 	}
 
-	public void eliminarPasajero() {
 
-	}
 
 	// ver si es necesario o no
 	public void verHabitacion(int numeroHabitacion) {

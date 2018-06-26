@@ -168,10 +168,9 @@ public class Login {
 	}
 
 	public void mostrarUsuarios() {
-
+		System.out.println("---------USUARIOS---------");
 		for (Usuario array : usuarios) {
 
-			System.out.println("---------USUARIOS---------");
 			array.mostrarUsuario();
 		}
 
@@ -248,26 +247,18 @@ public class Login {
 	public void modificarUsuario() {
 
 		Usuario e = null;
-		System.out.println("Ingrese el usuario a modificar:");
 		Scanner scanner = new Scanner(System.in); // Scanner para username
-		Console console = System.console();
-		String username = null;
-		username = scanner.next(); // Guarda Username
-		boolean flag = false; // para no seguir con el programa si no encuentro
-								// al usuario
-		for (Usuario array : usuarios) {
-
-			String nombre = array.getNombre();
-
-			if (nombre.equals(username)) {
-
-				e = array;
-				usuarios.remove(e);
+		System.out.println("Ingrese el usuario a modificar:");
+		// Console console = System.console(); // sacar
+		String username = scanner.next(); // Guarda Username
+		boolean flag = false; // para no seguir buscando si ya encontre al usuario
+		int i = 0;
+		while (i < usuarios.size() && flag == false) {
+			if (usuarios.get(i).getNombre().equalsIgnoreCase(username)) {
+				e = usuarios.get(i);
 				flag = true;
-
-			} else {
-				System.out.println("No existe el usuario, ingrese uno valido:");
 			}
+			i++;
 		}
 		if (flag == true) {
 			int opcion = 0;
@@ -277,24 +268,23 @@ public class Login {
 			opcion = scanner.nextInt(); // Guarda opcion
 			if (opcion == 1) {
 				System.out.println("Ingrese nuevo usuario");
-				String username2 = null;
-				username2 = scanner.next(); // Guarda Username
+				String username2 = scanner.next(); // Guarda Username
 				e.setNombre(username2);
 			}
 			if (opcion == 2) {
 				System.out.println("Ingrese nueva Password");
-				String pass = null;
-				pass = Hash.sha1(scanner.next()); // Encripto Pass
+				String pass = Hash.sha1(scanner.next()); // Encripto Pass
 				e.setPassword(pass);
 
 			}
-			cargarUsuario(e);
 			try {
 				pasarToarchivo();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-
+			System.out.println("USUARIO MODIFICADO EXITOSAMENTE!\n");
+		} else {
+			System.out.println("No existe el usuario, ingrese uno valido!");
 		}
 		// scanner.close();
 	}
@@ -303,9 +293,30 @@ public class Login {
 		System.out.println("------------- USUARIOS -------------");
 		for (Usuario us : usuarios) {
 			us.mostrarUsuario();
-			System.out.println("///////////////////////");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~");
 		}
 	}
 
-	// hacer borrar usuario
+	public void eliminarUsuario(String nombreUsuario) {
+		boolean flag = false; // para no seguir buscando si ya encontre al usuario
+		int i = 0;
+		while (i < usuarios.size() && flag == false) {
+			if (usuarios.get(i).getNombre().equalsIgnoreCase(nombreUsuario)) {
+				usuarios.remove(i);
+				flag = true;
+			}
+			i++;
+		}
+		if (flag == true) {
+			System.out.println("\nUSUARIO ELIMINADO CORRECTAMENTE!\n");
+			try {
+				pasarToarchivo();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("\nUSUARIO INEXISTENTE\n");
+		}
+
+	}
 }
