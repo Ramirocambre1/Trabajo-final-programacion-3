@@ -9,7 +9,7 @@ sacar Habitacion de "mostrar" en habitacion
 borrar disponibles de src
 ------------------------------------- anotacion 22/ 6 dia de entrega -------------------
 
-modificar usuario  -  corregir 
+modificar usuario  // arreglado 
 
 listar reservas - agregar al main // solucionado
 
@@ -17,15 +17,34 @@ modificar print disponibilidad para q muestre si o no - en habitacion // solucio
 
 check in - muestra habitacion ocupada exitosamente y no se puede ocupar a la vez // solucionado 
 
-modificar ocupar en habitacion
 
-reservas.contains dni en nueva reserva no funciona  // solucion , al leer de archivo se pasaba numero de habitacion como clave y no dni / / 
+reservas.contains dni en nueva reserva no funciona  // solucionado, al leer de archivo se pasaba numero de habitacion como clave y no dni / / 
 
 arrreglado al querer reservar cuando no habia habitaciones para reservar ya que tenian fechas ocupadas /// antes se creaba la reserva igual
 
 en las reservas los años se cargan mas grandes de lo ingresado por teclado /// solucionado // el constructor de date le suma 1900 al año
 
-hab.comprobar fechas // error ahi, se hicieron 2 reservas en la misma fecha // solucion, al leer archivo de reservas, no se pasaban las fechas reservadas a las habitaciones (hacer la funcion )
+hab.comprobar fechas // error ahi, se hicieron 2 reservas en la misma fecha // solucionado, al leer archivo de reservas, no se pasaban las fechas reservadas a las habitaciones (hacer la funcion )
 
 error, no se pueden hacer 2 reservas con el mismo numero de DNI (preguntar al profe)
 
+----------------------------------------
+Problema : al calcular la cantidad de dias, el programaba tomaba como si febrero tuviera 31 dias
+solucion: El constructor de Date , ingresa los meses de 0 a 11 
+
+problema: Las clave de las habitaciones no se comparaban correctamente con el numero pasado por parametro
+solucion : se estaba usando el " = = " en vez del equals
+
+generar ID de reserva, en base a la cantidad de reservas en el hashmap de reservas // solucionado, se hizo aleatorio siempre y cuando no existe uno asi en reserva
+
+hacer una funcion que pongo mi numero de dni, y me dice las reservas vinculadas a mi dni (consultar reserva) // HACERLO QUE ES UTIL
+
+modificar nueva reserva, pasar los scanner afuera, y q reciba todo por parametro
+
+listar usuarios // agregarlo al menu // agregado
+
+modificar pasajero,habitacion /// no llegamos
+
+hay que actualizar registro de igual forma q actualizar reservas a habitaciones
+
+en check in , si no hay reserva a ese numero, crear la reserva // pensarla bien , xq por ahi se equivoca al ingresar el numero y lo estamos obligando a crear uno nuevo 
