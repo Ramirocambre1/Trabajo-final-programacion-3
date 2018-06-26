@@ -37,7 +37,7 @@ solucion : se estaba usando el " = = " en vez del equals
 
 generar ID de reserva, en base a la cantidad de reservas en el hashmap de reservas // solucionado, se hizo aleatorio siempre y cuando no existe uno asi en reserva
 
-hacer una funcion que pongo mi numero de dni, y me dice las reservas vinculadas a mi dni (consultar reserva) // HACERLO QUE ES UTIL
+hacer una funcion que pongo mi numero de dni, y me dice las reservas vinculadas a mi dni (consultar reserva) // Agregado
 
 modificar nueva reserva, pasar los scanner afuera, y q reciba todo por parametro
 
